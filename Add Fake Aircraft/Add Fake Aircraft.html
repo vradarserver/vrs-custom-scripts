@@ -1,0 +1,56 @@
+<script type="text/javascript">
+    if(VRS && VRS.globalDispatch && VRS.serverConfig) {
+        VRS.globalDispatch.hook(VRS.globalEvent.bootstrapCreated, function(bootStrap) {
+            bootStrap.hookInitialised(function(pageSettings) {
+                if(pageSettings.aircraftListFetcher) {
+                    pageSettings.aircraftListFetcher.hookListFetched(function(fetchedList, isFSX) {
+                        if(!isFSX) {
+                            ++fetchCount;
+                            
+                            changeAircraftList(fetchedList);
+
+                            var countFakeAircraft = fakeAircraft.length;
+                            for(var i = 0;i < countFakeAircraft;++i) {
+                                var fake = fakeAircraft[i];
+                                if(changeAircraftState(fake)) {
+                                    fetchedList.acList.push(fake);
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    }
+
+    var fetchCount = 0;
+    
+    var fakeAircraft = [
+        {
+            "Id":   1193046,
+            "Icao": "123456",
+            "Reg":  "G-FAKE",
+            "Alt":  12000,
+            "Trak": 270.0,
+            "Lat":  60.0,
+            "Long": -179.0
+        }
+    ];
+    
+    function changeAircraftList(fetchedList)
+    {
+        fetchedList.acList.splice(0, fetchedList.acList.length);
+    }
+    
+    function changeAircraftState(aircraft)
+    {
+        aircraft.Long -= 0.1;
+        if(aircraft.Long < -180) {
+            aircraft.Long = 180 + (aircraft.Long + 180);
+        }
+        
+        aircraft.PosTime = (new Date()).getTime();
+        
+        return true;
+    }
+</script>
