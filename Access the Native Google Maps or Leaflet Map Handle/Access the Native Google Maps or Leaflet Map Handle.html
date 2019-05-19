@@ -1,0 +1,29 @@
+<script type="text/javascript">
+    if(VRS && VRS.globalDispatch && VRS.serverConfig) {
+        VRS.globalDispatch.hook(VRS.globalEvent.bootstrapCreated, function(bootStrap) {
+            // Check to see if this version of the bootstrap raises an event once the map has initialised
+            if(bootStrap.hookMapInitialised) {
+                bootStrap.hookMapInitialised(function(pageSettings) {
+                    if(pageSettings.mapPlugin) {
+                        switch(pageSettings.mapPlugin.getNativeType()) {
+                            case 'GoogleMaps':
+                                var googleMap = pageSettings.mapPlugin.getNative();     // google.maps.Map handle
+
+                                ////////////////////////////////////////
+                                // ADD YOUR GOOGLE MAPS CODE HERE
+
+                                break;
+                            case 'OpenStreetMap':
+                                var leafletMap = pageSettings.mapPlugin.getNative();    // L.Map handle
+
+                                ////////////////////////////////////////
+                                // ADD YOUR LEAFLET MAPS CODE HERE
+
+                                break;
+                        }
+                    }
+                });
+            }
+        });
+    }
+</script>
