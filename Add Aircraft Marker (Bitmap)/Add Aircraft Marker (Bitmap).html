@@ -1,0 +1,26 @@
+<script type="text/javascript">
+    // Check that the page has the standard VRS scripts loaded
+    if(VRS && VRS.globalDispatch && VRS.serverConfig) {
+        // Hook the event that is fired before the page is constructed
+        VRS.globalDispatch.hook(VRS.globalEvent.bootstrapCreated, function(bootStrap) {
+            // When the event runs check that the page has aircraft markers
+            if(VRS.globalOptions && VRS.globalOptions.aircraftMarkers) {
+
+                // Add your new rules to the START of the VRS.globalOptions.aircraftMarkers array using unshift.
+                // Add these in the reverse order of precedence - so if you have a marker whose rule should be
+                // applied if all other rules fail then unshift() it first and add more specific rules after.
+                VRS.globalOptions.aircraftMarkers.unshift(
+                    new VRS.AircraftMarker({
+                        normalFileName:   'custom-not-selected.png',
+                        selectedFileName: 'custom-selected.png',
+                        size:             { width: 32, height: 32 },
+                        matches: function(aircraft) {
+                            return aircraft.altitude.val < 10000;
+                        }
+                    })
+                );
+
+            }
+        });
+    }
+</script>
