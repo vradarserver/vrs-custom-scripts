@@ -11,8 +11,7 @@ for both version 2 and 3 (**2+**) or just version 3 (**3**).
 If you find any errors or ommissions in this page then please submit a pull request.
 
 ## Simple value fields
-These are fields that have a standard JavaScript type. The *Type* column indicates the type and
-the *Version* indicates whether it 
+These are fields that have a standard JavaScript type.
 
 |Name|Type|Version|Description|
 |----|----|:-----:|-----------|
@@ -21,10 +20,12 @@ the *Version* indicates whether it
 |updateCounter|`number`|2+|The number of times the aircraft has appeared in an aircraft list refresh|
 
 
-## `Value<T>` fields
-Almost all aircraft fields are of type **`Value<T>`**, where T is either a string, a number, a boolean or an enum type (see below for a list of enum types).
+## Object fields
+Almost all aircraft fields are of type **`Value<T>`**. Normally T is a simple number, string or boolean
+but for some fields T can be an enum or an object type. The other possible types are described at the
+bottom of this page.
 
-A `Value<T>` has these fields:
+A `Value<T>` object has these fields:
 
 |Name|Type|Description|
 |----|----|-----------|
@@ -33,11 +34,21 @@ A `Value<T>` has these fields:
 
 The *Type* column indicates the T parameter for `Value<T>` - i.e. the type of the *val* field.
 
-So for example, if you have an Aircraft object called *aircraft* and you want to know its ICAO then you
-would refer to `aircraft.icao.val` and the result would be a string.
+### Reading `Value<T>` fields
 
-Similarly if you want to know if its altitude changed in the last update then you would test
-`aircraft.altitude.chg`.
+As you can see from the table below the *latitude* field is of type `Value<number>`.
+
+Assuming you have an instance of a **VRS.Aircraft** object called aircraft then:
+
+1. You can get the aircraft's latitude as a number from `aircraft.latitude.val`.
+2. You can tell whether the latitude changed in the latest refresh by testing `aircraft.latitude.chg`.
+
+The *val* value can be null or undefined if it has never been sent for the aircraft, but the field
+itself is always defined, it can never be null. So if the aircraft in our example is not transmitting
+a position then `aircraft.latitude.val` will be undefined or null and `aircraft.latitude.chg` will be
+false (if it was never sent then it has never changed).
+
+### Value fields
 
 |Name|Type|Version|Description|
 |----|----|:-----:|-----------|
@@ -78,7 +89,7 @@ Similarly if you want to know if its altitude changed in the last update then yo
 |operator|`string`|2+|The person or corporation that operates the aircraft|
 |operatorIcao|`string`|2+|The ICAO of the corporation that operates the aircraft|
 |squawk|`string`|2+|The squawk code being transmitted by the aircraft|
-|identActiveidentActive|`boolean`|3|True if the aircraft is transmitting ident|
+|identActive|`boolean`|3|True if the aircraft is transmitting ident|
 |isEmergency|`boolean`|2+|True if *squawk* represents an emergency squawk code|
 |distanceFromHereKm|`number`|2+|The distance from the browser location to the aircraft in kilometres|
 |bearingFromHere|`number`|2+|The bearing from true north to the browser location to the aircraft|
@@ -107,23 +118,23 @@ Similarly if you want to know if its altitude changed in the last update then yo
 
 ## `ArrayValue<T>`
 
-Fields that hold a collection of trail coordinates are of type **`ArrayValue<T>`** where T is the type of the object being stored.
+Value fields that are a collection of objects are of type **`ArrayValue<T>`** where T is the type of the object being stored.
 
-If the array changes in an aircraft list refresh then the code will trim objects from the start of the
-array and add new objects to the end of the array.
+If the array changes in a refresh then the code will trim objects from the start of the array and add
+new objects to the end of the array.
 
 An `ArrayValue<T>` has these fields:
 
 |Name|Type|Description|
 |----|----|-----------|
-|arr|T[]|The array of values|
-|chg|boolean|True if any element in *arr* changed in the last refresh of the aircraft list|
-|chgIdx|number|The index of the first value added in the last update, -1 if no fields were added|
-|trimStartCount|number|The number of array elements that were removed from the start of the array in the last update|
+|arr|`T[]`|The array of values|
+|chg|`boolean`|True if any element in *arr* changed in the last refresh of the aircraft list|
+|chgIdx|`number`|The index of the first value added in the last update, -1 if no fields were added|
+|trimStartCount|`number`|The number of array elements that were removed from the start of the array in the last update|
 
 ## Enum Types
 
-These are described in Enum.ts. You can use the named values in your JavaScript, e.g.:
+These are described in [enums.ts](https://github.com/vradarserver/vrs/blob/master/VirtualRadar.WebSite/Site/Web/script/vrs/enums.ts). You can use the named values in your JavaScript, e.g.:
 
 `aircraft.species.val === Species.Helicopter;`
 
@@ -218,19 +229,6 @@ The **AirportDataThumbnail** object has the following fields:
 |link|`string`|2+|The URL to the full-sized image|
 |photographer|`string`|2+|The name of the photographer for the copyright notice|
 
-### ShortTrailValue
-
-Describes a coordinate in a short trail. Short trails are only sent if they have been
-requested by the user.
-
-|Name|Type|Version|Description|
-|----|----|:-----:|-----------|
-|lat|`number`|2+|The latitude of the coordinate|
-|lat|`number`|2+|The longitude of the coordinate|
-|posnTick|`number`|2+|The JavaScript tick time at which the position was recorded|
-|altitude|`number`|2+|The altitude in feet when the position was recorded|
-|speed|`number`|2+|The ground speed in knots when the position was recorded|
-
 ### FullTrailValue
 
 Describes a coordinate in a full trail. Full trails are only sent if they have been
@@ -255,3 +253,16 @@ This extends `Value<string>` to add a new function called **getAirportCode** tha
 the airport's code from the airport description.
 
 Otherwise the string is both the airport code and its description.
+
+### ShortTrailValue
+
+Describes a coordinate in a short trail. Short trails are only sent if they have been
+requested by the user.
+
+|Name|Type|Version|Description|
+|----|----|:-----:|-----------|
+|lat|`number`|2+|The latitude of the coordinate|
+|lat|`number`|2+|The longitude of the coordinate|
+|posnTick|`number`|2+|The JavaScript tick time at which the position was recorded|
+|altitude|`number`|2+|The altitude in feet when the position was recorded|
+|speed|`number`|2+|The ground speed in knots when the position was recorded|
