@@ -10,7 +10,7 @@ Add the HTML script file to the END of HEAD for address *.
 ## Configure the site root in the Custom Content Plugin
 The script relies on custom marker images. Without those images the script will not work.
 
-The sample custom images are sample-images folder.
+The sample custom images are in the **sample-images** folder.
 
 1. Create a folder called **Web** somewhere. Under that create a folder called **images**.
    In there create a folder called **markers**.
@@ -19,6 +19,18 @@ The sample custom images are sample-images folder.
 
 3. In the custom content plugin set **Site root folder** to the full path to the **Web** folder
    that you created.
+
+This is how the folders and files should be arranged when you are finished, where **Site Root Folder**
+is the **Web** folder that you created:
+
+````
+Site Root Folder
++-- images
+    +-- markers
+        |-  custom-not-selected.png
+        |-  custom-selected.png
+ ````
+
 
 ### Warning
 The Custom Content plugin will serve any file that is in your custom **Site root folder**. Do not
@@ -32,10 +44,10 @@ The AircraftMarker type has four fields:
 
 |Field Name|Type|Description|
 |----------|----|-----------|
-|normalFileName|string|The filename of the image in **markers** to use when the aircraft has not been selected by the user|
-|selectedFileName|string|The filename of the image in **markers** to use when the aircraft has been selected by the user|
-|size|{ width: number, height: number}|The size in pixels of both variants of the aircraft marker|
-|matches|function|A function that is passed an **aircraft** object and returns true if the marker should be shown for that aircraft|
+|normalFileName|`string`|The filename of the image in **markers** to use when the aircraft has not been selected by the user|
+|selectedFileName|`string`|The filename of the image in **markers** to use when the aircraft has been selected by the user|
+|size|`{ width: number, height: number}`|The size in pixels of both variants of the aircraft marker|
+|matches|`function`|A function that is passed an **aircraft** object and returns true if the marker should be shown for that aircraft|
 
 The aircraft marker objects are stored in an array called **VRS.globalOptions.aircraftMarkers**.
 
