@@ -1,0 +1,29 @@
+<script type="text/javascript">
+    if(VRS && VRS.globalDispatch && VRS.serverConfig) {
+        VRS.globalDispatch.hook(VRS.globalEvent.bootstrapCreated, function(bootStrap) {
+            // Check to see if this version of the bootstrap raises an event once the map has initialised
+            if(bootStrap.hookMapInitialised) {
+                // It has the event - hook it
+                bootStrap.hookMapInitialised(function(pageSettings) {
+                    // This is called once the map has been loaded. The jQuery plugin for the map will be
+                    // held in pageSettings.mapPlugin. Note that this event is also raised when the page
+                    // is loaded in offline mode, so we need to check that mapPlugin is good before we
+                    // use it.
+                    if(pageSettings.mapPlugin) {
+                        var controlJQuery = $('<div />')
+                            .css({
+                                width:          200,
+                                height:         80,
+                                background:     '#fff',
+                                'font-size':    '2em'
+                            })
+                            .text('Hello World!');
+
+                        // See the accompanying README.md for more information about mapPlugin.addControl
+                        pageSettings.mapPlugin.addControl(controlJQuery, VRS.MapPosition.BottomLeft);
+                    }
+                });
+            }
+        });
+    }
+</script>
