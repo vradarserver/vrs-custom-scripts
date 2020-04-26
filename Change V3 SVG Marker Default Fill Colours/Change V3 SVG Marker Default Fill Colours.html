@@ -1,0 +1,8 @@
+<script type="text/javascript">
+    if(VRS && VRS.globalDispatch && VRS.serverConfig) {
+        VRS.globalDispatch.hook(VRS.globalEvent.bootstrapCreated, function(bootStrap) {
+            VRS.globalOptions.svgAircraftMarkerNormalFill =   '#0000FF';
+            VRS.globalOptions.svgAircraftMarkerSelectedFill = '#FF0000';
+        });
+    }
+</script>
