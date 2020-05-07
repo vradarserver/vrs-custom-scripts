@@ -5,8 +5,10 @@ Add this to the END of HEAD for *.
 This script adds some inline CSS that resizes and repositions the splitter area so that you can add
 a banner to the page.
 
-The splitter area has the ID #splitters. It is usually sized to occupy 100% of its parent's width
-and height. Its parent is usually the ```<body>``` tag.
+## Desktop pages
+
+The desktop pages have splitters. These are in an element with the ID **#splitters**. It is usually
+sized to occupy 100% of its parent's width and height. Its parent is usually the ```<body>``` tag.
 
 If you add a header element to the body tag then the splitters element will continue to occupy the
 full width and heigth of the body but it will be displaced by the banner. Normally this means that
@@ -27,6 +29,8 @@ room to appear at the top of the page:
     top: 90px;
 ```
 
-After that you can add a pseudo element to body or use JavaScript to add the elements you need for your
-banner. The example creates a pseudo element and styles it to show the area occupied by the "banner" in
-yellow.
+## Mobile pages
+
+The mobile pages are rendered within an element called **#pages**. The technique to resize this for
+a banner is basically the same as for making room on the desktop page except you do not have to move
+the pages element out of the way.
