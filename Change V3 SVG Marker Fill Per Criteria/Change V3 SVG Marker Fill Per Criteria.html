@@ -1,0 +1,36 @@
+<script type="text/javascript">
+    if(VRS && VRS.globalDispatch && VRS.serverConfig) {
+        VRS.globalDispatch.hook(VRS.globalEvent.bootstrapCreated, function(bootStrap) {
+            var len = VRS.globalOptions.aircraftMarkers.length;
+            for(var i = 0;i < len;++i) {
+                var aircraftMarker = VRS.globalOptions.aircraftMarkers[i];
+                if(aircraftMarker.getIsAircraft()) {
+                    aircraftMarker.setSvgFillColourCallback(customSvgFillColourCallback);
+                }
+            }
+        });
+    }
+    
+    function customSvgFillColourCallback(aircraft, isSelected)
+    {
+        var normal = VRS.globalOptions.svgAircraftMarkerNormalFill;     // #FFFFFF
+        var selected = VRS.globalOptions.svgAircraftMarkerSelectedFill;   // #FFFF00
+
+        switch(aircraft.operatorIcao.val) {
+            case 'BAW':
+                normal = '#0000FF';
+                selected = '#8888FF';
+                break;
+            case 'EZY':
+                normal = '#00FF00';
+                selected = '#88FF88';
+                break;
+            case 'VIR':
+                normal = '#FF0000';
+                selected = '#FF8888';
+                break;
+        }
+
+        return isSelected ? selected : normal;
+    }
+</script>
