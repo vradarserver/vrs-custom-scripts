@@ -1,0 +1,27 @@
+<script type="text/javascript">
+    if(VRS && VRS.globalDispatch && VRS.serverConfig) {
+        VRS.globalDispatch.hook(VRS.globalEvent.bootstrapCreated, function(bootStrap) {
+            /*
+                The SVG marker font is a JavaScript object with CSS properties. This is
+                the default font object as of time of writing (Aug 2022):
+
+                {
+                    'font-family': 'Roboto, Sans-Serif',
+                    'font-size': '8pt',
+                    'font-weight': '700',
+                    'fill': '#FFFFFF'
+                }
+                
+                Note that CSS properties that include a hyphen need to be enclosed in
+                quote marks. For the sake of consistency I've enclosed all of the field
+                names in quotes.
+            */
+            VRS.globalOptions.svgAircraftMarkerTextStyle = {
+                'font-family': 'Consolas, monospace',
+                'font-size':   '10pt',
+                'font-weight': '400',
+                'fill':        '#80FF00'
+            };
+        });
+    }
+</script>
